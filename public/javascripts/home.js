@@ -1,12 +1,11 @@
-$(document).ready(function(){
-  console.log("ssssssssssssss");
-    $.ajax({
-      url: "test.html",
-      context: document.body
-    }).done(function() {
-      $( this ).addClass( "done" );
-    });
-});
-
-
 console.log("testttttttt");
+
+$(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    })
+
+});
