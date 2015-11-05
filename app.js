@@ -29,10 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routing
 var controller_dir = path.resolve("./controllers");
 routing.root(app, controller_dir, "index", "home");
-routing.resources(app, controller_dir, "events", { exclude: ["new", "edit"], collection: [
-    ["post", "search", "search"]
-] });
-routing.resources(app, controller_dir, "users", { only: ["index", "create"] });
 routing.expose_routing_table(app);
 
 //app.use('/', routes);
