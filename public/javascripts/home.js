@@ -2,7 +2,10 @@ console.log("testttttttt");
 
 $(document).ready(function() {
 
-    // page is now ready, initialize the calendar...
+  var events = getEvents();
+  console.log("1111111111111111");
+  console.log(events);
+
 
     $('#calendar').fullCalendar({
       header: {
@@ -18,3 +21,28 @@ $(document).ready(function() {
   });
 
 });
+
+
+
+var getEvents = function(){
+  console.log("getEvents()");
+
+  $.ajax({
+    url: "events",
+    method: "GET"
+  }).done(function(data){
+    console.log(data);
+    var events = [];
+    $.each(data, function(index, event){
+      var event = {};
+      event["title"] = event.name;
+      event["start"] = event.start_date;
+      event["description"] = event.description;
+      events[index] = event;
+    })
+
+    return events;
+
+  });
+
+}
