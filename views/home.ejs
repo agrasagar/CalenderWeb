@@ -1,18 +1,18 @@
 <% layout('layout') -%>
 
-<div id="leftBar">
-<form>
-<a href="#" id="Create" class="button"><span>✓</span>Create   </a>
-<br>
-<a href="#" id="Update"  class="button"><span>✓</span>Update   </a>
-<br>
-<a href="#" id="Delete"  class="button"><span>✓</span>Delete   </a>
-<br>
-<a href="#" id="Search"  class="button"><span>✓</span>Search   </a>
-</form>
+<div id="leftBar1" class="pull-left col-md-2">
+  <form>
+  <a href="#" id="Create" class="button"><span>✓</span>Create   </a>
+  <br>
+  <a href="#" id="Update"  class="button"><span>✓</span>Update   </a>
+  <br>
+  <a href="#" id="Delete"  class="button"><span>✓</span>Delete   </a>
+  <br>
+  <a href="#" id="Search"  class="button"><span>✓</span>Search   </a>
+  </form>
 </div>
 
-<div id="box" align="center">
+<!--div id="box" align="center">
 </div>
  <form id="dialog">User Name:
         <input type="text" name="firstName" value=" " />
@@ -22,16 +22,44 @@
         <input type="date" name="start_date" id="datepicker" />
         <input id="submit" type="submit" />
         <button type="button" id="cancel">Cancel</button>
+    </form-->
+
+<div id="container-calendar" class="col-md-8"><div id="calendar"></div></div>
+
+<div id="rightBar1" class="pull-right col-md-2">
+  <div>
+    <h3> Event Details: </h3>
+    <form id="event-form" action="">
+      <div>
+        <div id="new_event_note" style="display:none;">Create new event:</div>
+        <input type="hidden" name="action_type" id="action_type" value=""/>
+        <input type="hidden" name="event_id" id="event_id" value=""/>
+      </div>
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="event_name" />
+      </div>
+
+      <div>
+        <label for="description">Description:</label>
+        <input type="text" id="event_description" />
+      </div>
+
+      <div>
+        <label for="start_date">Start Date:</label>
+        <input type="text" id="event_start_date" />
+      </div>
+
+      <div>
+        <label for="start_time">Start Time:</label>
+        <input type="text" id="event_start_time" />
+      </div>
+
+
+      <button id="event_save_btn" class="btn btn-primary">Save</button>
+      <button id="event_delete_btn" class="btn btn-warning">Delete</button>
     </form>
 
+  </div>
 
-
-<div id="rightBar">
-<form>
-
-</form>
 </div>
-
-<div id="left-bar"></div>
-<div id="Container"><div id="calendar"></div></div>
-<div id="right-bar"></div>
