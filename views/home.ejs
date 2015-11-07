@@ -1,2 +1,37 @@
 <% layout('layout') -%>
-<div id="calendar"></div>
+
+<div id="leftBar">
+<form>
+<a href="#" id="Create" class="button"><span>✓</span>Create   </a>
+<br>
+<a href="#" id="Update"  class="button"><span>✓</span>Update   </a>
+<br>
+<a href="#" id="Delete"  class="button"><span>✓</span>Delete   </a>
+<br>
+<a href="#" id="Search"  class="button"><span>✓</span>Search   </a>
+</form>
+</div>
+
+<div id="box" align="center">
+</div>
+ <form id="dialog">User Name:
+        <input type="text" name="firstName" value=" " />
+        <br/>description:
+        <input type="text" name="description" value=" "/>
+        <br/>start_date:
+        <input type="date" name="start_date" id="datepicker" />
+        <input id="submit" type="submit" />
+        <button type="button" id="cancel">Cancel</button>
+    </form>
+
+
+
+<div id="rightBar">
+<form>
+
+</form>
+</div>
+
+<div id="left-bar"></div>
+<div id="Container"><div id="calendar"></div></div>
+<div id="right-bar"></div>
