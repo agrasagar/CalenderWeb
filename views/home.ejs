@@ -1,15 +1,42 @@
 <% layout('layout') -%>
 
 <div id="leftBar1" class="pull-left col-md-3">
-  <form>
-  <a href="#" id="Create" class="button"><span>✓</span>Create   </a>
-  <br>
-  <a href="#" id="Update"  class="button"><span>✓</span>Update   </a>
-  <br>
-  <a href="#" id="Delete"  class="button"><span>✓</span>Delete   </a>
-  <br>
-  <a href="#" id="Search"  class="button"><span>✓</span>Search   </a>
-  </form>
+  <div>
+    <div>
+      <h3>Search Events:</h3>
+      <form id="event-form" action="">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" name="search_name" id="search_name" class="form-control" value=" " />
+        </div>
+
+        <div>
+          <label for="description" class="form-group">Description:</label>
+          <input type="text" name="search_description" id="search_description" class="form-control" value=" "  />
+        </div>
+
+        <div>
+          <label for="start_date" class="form-group">Start Date:</label>
+          <input type="text" id="search_start" class="form-control"/>
+        </div>
+
+        <div>
+          <label for="end_date" class="form-group">End Date:</label>
+          <input type="text" id="search_end" class="form-control"/>
+        </div><br />
+
+        <span id="Search" class="btn btn-primary">Search</span>
+        <span id="Clear" class="btn btn-warning">clear</span><br /><br />
+
+        <div id="search_results" style="display:none;"><b>Results</b>
+          <div id="accordion"></div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
 </div>
 
 <div id="container-calendar" class="col-md-6"><div id="calendar"></div></div>
@@ -42,7 +69,6 @@
         <label for="start_time">Start Time:</label>
         <input type="text" id="event_start_time" class="form-control" />
       </div>
-
 
       <span id="event_save_btn" class="btn btn-primary">Save</span>
       <span id="event_delete_btn" class="btn btn-warning">Delete</span>

@@ -1,32 +1,5 @@
 
 $(document).ready(function() {
-
-/*
-    $( "#Create" ).click(function() {
-        $("#box").fadeIn('slow');
-        $("#dialog").fadeIn('slow');
-    });
-    $('#submit').click(function(){
-      var name = $('input[name="firstName"]').val();
-      var description = $('input[name="description"]').val();
-      var start_date = $('input[name="start_date"]').val();
-      console.log(name);
-      console.log(description);
-      $('#box,#dialog').hide();
-    })
-    $('#cancel').click(function(){
-      $('#box,#dialog').hide();
-    })
-    $( "#Upadate" ).click(function() {
-      $( this ).slideUp();
-    });
-    $( "#Delete" ).click(function() {
-      $( this ).slideUp();
-    });
-    $( "#Search" ).click(function() {
-      $( this ).slideUp();
-    });
-*/
     // page is now ready, initialize the calendar...
       $('#calendar').fullCalendar({
 
@@ -70,9 +43,18 @@ $(document).ready(function() {
     dateFormat: "yy-mm-dd"
   });
 
+  $("#search_start").datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+
+  $("#search_end").datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+
   $("#event_start_time").timepicker({
     timeFormat: "H:i"
   });
+
   $("#event_save_btn").click(function(){
     saveEvent();
     return false;
@@ -92,6 +74,14 @@ $(document).ready(function() {
     console.log("export google calendar");
     exportEventToGCal();
   });
+
+  $("#Search").click(function(){
+    searchEvents();
+  });
+
+    $("#Clear").click(function(){
+      clearFields();
+    })
 
 });
 //---document ready block ends here
@@ -165,6 +155,56 @@ var deleteEvent = function(){
       $('#calendar').fullCalendar('refetchEvents');
     }
   });
+}
+
+var searchEvents = function(){
+  $("#accordion").html("");
+  $("#search_results").show();
+  var url = "/events/search";
+  var method = "POST";
+  var params = {};
+  if($("#search_name").val()!=undefined) params.name = $("#search_name").val().trim();
+  if($("#search_description").val()!=undefined) params.description = $("#search_description").val().trim();
+  if($("#search_start").val().trim()) params.start_date = $("#search_start").val().trim();
+  if($("#search_end").val().trim()) params.end_date = $("#search_end").val().trim();
+    $.ajax({
+      url: url,
+      method: method,
+      data: params,
+      async: false,
+      success: function(data){
+        console.log(data);
+        var str = "";
+        if(data.length == 0){
+          str = "0 Search results"
+            $("#accordion").html(str);
+        }
+        $.each( data, function( index, event) {
+          var start= new Date(event.start_date);
+          var end= new Date(event.end_date);
+          str += "<h4>"+event.name+"</h4>";
+          str += "<div><p><span>Description: </span><span class='label label-info'>"+event.description+"</span></p>"
+          str += "<p><span>Start: </span><span class='label label-info'>"+start.toDateString()+"</span></p>"
+          str += "<p><span>End: </span><span class='label label-info'>"+end.toDateString()+"</span></p>"
+          str += "<p><span>Recurrence: </span><span class='label label-info'>"+event.repeat+"</span></p></div>"
+          console.log(str);
+        });
+        console.log(str);
+        $("#accordion").html(str);
+        $("#accordion").accordion({
+          header: "h4"
+        });
+        }
+    });
+}
+
+var clearFields = function(){
+  $("#search_name").val("");
+  $("#search_description").val("");
+  $("#search_start").val("");
+  $("#search_end").val("");
+  $("#accordion").html("");
+  $("#search_results").hide();
 }
 
 var importGCal = function(){

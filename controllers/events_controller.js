@@ -5,8 +5,8 @@ var OAuth2 = google.auth.OAuth2;
 
 
 var gCalKeys = {
-  clientId: "462596446350-vasqtrjhf3qsco21u2qod6fppja0veh6.apps.googleusercontent.com",
-  clientSecret: "MuX4UMJlXHUrdkzgHBGCW7Ll",
+  clientId: "462596446350-kp7hpclfj72g7dc6p214kbl033loac5a.apps.googleusercontent.com",
+  clientSecret: "PG2n3ti0ICkJ1mDjo-ZIPuE8",
   redirectUrl: "http://localhost:4000/oauth2callback",
 }
 
@@ -73,6 +73,20 @@ routing.destroy = function(req, res) {
   });
 }
 
+routing.search = function(req,res){
+  var params = req.body;
+  console.log(params);
+  args ={
+        data: req.body, // query parameter substitution vars
+        headers:{"Content-Type":"application/json"} // request headers
+      };
+     client.post("http://localhost:3000/events/search",args, function(data, response){
+          var events = JSON.parse(data);
+          console.log(events);
+          res.send(events);
+    });
+}
+
 routing.export_event = function(req, res) {
   event_id = req.body.id;
 
@@ -81,10 +95,6 @@ routing.export_event = function(req, res) {
     access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
     scope: "https://www.googleapis.com/auth/calendar"
   });
-  console.log(url);
-
-
-
   res.send(url);
 }
 
