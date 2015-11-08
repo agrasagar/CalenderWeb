@@ -3,6 +3,7 @@ var Client = require('node-rest-client').Client;
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 
+var CALENDAR_API_URL = "http://localhost:3000"
 
 var gCalKeys = {
   clientId: "462596446350-kp7hpclfj72g7dc6p214kbl033loac5a.apps.googleusercontent.com",
@@ -16,7 +17,7 @@ var event_id = "";
 routing.index = function(req, res){
     console.log("get events");
 
-    client.get("http://localhost:3000/events", function(data, response){
+    client.get(CALENDAR_API_URL+"/events", function(data, response){
       var events = JSON.parse(data);
       var events_array = []
 
@@ -42,7 +43,7 @@ routing.create = function(req, res){
     headers:{"Content-Type": "application/json"}
   };
 
-  client.post("http://localhost:3000/events", args, function(data, response){
+  client.post(CALENDAR_API_URL+"/events", args, function(data, response){
     var events = JSON.parse(data);
     res.send(events);
   });
@@ -57,7 +58,7 @@ routing.update = function(req, res){
     headers:{"Content-Type": "application/json"}
   };
 
-  client.put("http://localhost:3000/events/"+event._id , args, function(data, response){
+  client.put(CALENDAR_API_URL+"/events/"+event._id , args, function(data, response){
     var json = JSON.parse(data);
     res.send(json);
   });
@@ -66,7 +67,7 @@ routing.update = function(req, res){
 
 routing.destroy = function(req, res) {
   var id = req.params.id;
-  client.delete("http://localhost:3000/events/"+id, function(data, response){
+  client.delete(CALENDAR_API_URL+"/events/"+id, function(data, response){
     var result = JSON.parse(data);
 
     res.send(result);
@@ -80,7 +81,7 @@ routing.search = function(req,res){
         data: req.body, // query parameter substitution vars
         headers:{"Content-Type":"application/json"} // request headers
       };
-     client.post("http://localhost:3000/events/search",args, function(data, response){
+     client.post(CALENDAR_API_URL+"/events/search",args, function(data, response){
           var events = JSON.parse(data);
           console.log(events);
           res.send(events);
