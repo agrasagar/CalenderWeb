@@ -52,7 +52,8 @@ $(document).ready(function() {
               }
             },
             //url for fetching events
-            events: "events",
+            //events: "events",
+            eventSources: [ "events" ],
             timezone: "Europe/Helsinki",
             allDay: false,
             eventClick: function( event, jsEvent, view ) {
@@ -80,7 +81,17 @@ $(document).ready(function() {
   $("#event_delete_btn").click(function(){
     deleteEvent();
     return false;
-  })
+  });
+
+  $("#import-gcal").click(function(){
+    console.log("import google calendar");
+    importGCal();
+  });
+
+  $("#event_export_btn").click(function(){
+    console.log("export google calendar");
+    exportEventToGCal();
+  });
 
 });
 //---document ready block ends here
@@ -93,7 +104,7 @@ var showEvent = function(calEvent, jsEvent, view){
   $("#event_description").val(calEvent.description);
   $("#event_start_date").datepicker("setDate", calEvent.start.toDate());
   $("#event_start_time").timepicker("setTime", calEvent.start.toDate());
-
+  $("#event_export_btn").show();
 }
 
 var newEvent = function(date, jsEvent, view){
@@ -104,6 +115,7 @@ var newEvent = function(date, jsEvent, view){
   $("#event_description").val("");
   $("#event_start_date").datepicker("setDate", date.toDate());
   $("#event_start_time").timepicker("setTime", date.toDate());
+  $("#event_export_btn").hide();
 };
 
 var saveEvent = function(){
@@ -136,7 +148,6 @@ var saveEvent = function(){
     success: function(data){
       console.log(data);
       $('#calendar').fullCalendar('refetchEvents');
-      //$('#calendar').fullCalendar('rerenderEvents');
     }
   });
 
@@ -152,8 +163,36 @@ var deleteEvent = function(){
     success: function(data){
       console.log(data);
       $('#calendar').fullCalendar('refetchEvents');
-      //$('#calendar').fullCalendar('rerenderEvents');
     }
   });
-
 }
+
+var importGCal = function(){
+  var isChecked = $("#import-gcal-checkbox").is(":checked");
+  var googleApiKeys = {
+    googleCalendarApiKey: 'AIzaSyAwHVdFNAQE0NwTKBtETzER_u8p-o5wKEQ',
+    googleCalendarId: 'aaltoelec@gmail.com'
+  }
+  if(isChecked){
+    $('#calendar').fullCalendar( "removeEventSource", googleApiKeys);
+    $('#calendar').fullCalendar( "addEventSource", googleApiKeys);
+    $('#calendar').fullCalendar('refetchEvents');
+  } else {
+    $('#calendar').fullCalendar( "removeEventSource", googleApiKeys);
+    $('#calendar').fullCalendar('refetchEvents');
+  }
+}
+
+var exportEventToGCal = function(){
+  var id = $("#event_id").val();
+  $.ajax({
+    url: "events/export_event",
+    method: "POST",
+    data: {id: id},
+    async: false,
+    success: function(data){
+      console.log(data);
+      window.location.replace(data);
+    }
+  });
+};

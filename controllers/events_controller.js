@@ -1,8 +1,17 @@
 var routing = require('resource-routing');
 var Client = require('node-rest-client').Client;
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
 
-client = new Client();
 
+var gCalKeys = {
+  clientId: "462596446350-vasqtrjhf3qsco21u2qod6fppja0veh6.apps.googleusercontent.com",
+  clientSecret: "MuX4UMJlXHUrdkzgHBGCW7Ll",
+  redirectUrl: "http://localhost:4000/oauth2callback",
+}
+
+var client = new Client();
+var event_id = "";
 //get /events
 routing.index = function(req, res){
     console.log("get events");
@@ -62,6 +71,60 @@ routing.destroy = function(req, res) {
 
     res.send(result);
   });
+}
+
+routing.export_event = function(req, res) {
+  event_id = req.body.id;
+
+  var oauth2Client = new OAuth2(gCalKeys.clientId, gCalKeys.clientSecret, gCalKeys.redirectUrl);
+  var url = oauth2Client.generateAuthUrl({
+    access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
+    scope: "https://www.googleapis.com/auth/calendar"
+  });
+  console.log(url);
+
+
+
+  res.send(url);
+}
+
+//callback action for googleapi authentication
+routing.oauth2callback = function(req, res){
+  code = req.query.code;
+  var oauth2Client = new OAuth2(gCalKeys.clientId, gCalKeys.clientSecret, gCalKeys.redirectUrl);
+  oauth2Client.getToken(code, function(err, tokens) {
+    if(!err) {
+      oauth2Client.setCredentials(tokens);
+
+      client.get("http://localhost:3000/events/"+event_id, function(data, response){
+        var event = JSON.parse(data);
+
+        var event_to_export = {}
+        event_to_export.summary = event.name;
+        event_to_export.start = {"dateTime": event.start_date};
+        event_to_export.end = {"dateTime": event.end_date};
+        event_to_export.description = event.description;
+
+        console.log(event_to_export);
+        google.calendar("v3").events.insert({
+          calendarId: "primary",
+          auth: oauth2Client,
+          resource: event_to_export
+        }, function(err, response){
+          if(err){
+            console.log(err);
+          } else {
+            console.log(response);
+          }
+          res.render('home', { title: 'Calendar' });
+        });
+
+      });
+
+
+    }
+  });
+
 }
 
 module.exports = routing;

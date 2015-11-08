@@ -1,6 +1,6 @@
 <% layout('layout') -%>
 
-<div id="leftBar1" class="pull-left col-md-2">
+<div id="leftBar1" class="pull-left col-md-3">
   <form>
   <a href="#" id="Create" class="button"><span>✓</span>Create   </a>
   <br>
@@ -12,22 +12,10 @@
   </form>
 </div>
 
-<!--div id="box" align="center">
-</div>
- <form id="dialog">User Name:
-        <input type="text" name="firstName" value=" " />
-        <br/>description:
-        <input type="text" name="description" value=" "/>
-        <br/>start_date:
-        <input type="date" name="start_date" id="datepicker" />
-        <input id="submit" type="submit" />
-        <button type="button" id="cancel">Cancel</button>
-    </form-->
+<div id="container-calendar" class="col-md-6"><div id="calendar"></div></div>
 
-<div id="container-calendar" class="col-md-8"><div id="calendar"></div></div>
-
-<div id="rightBar1" class="pull-right col-md-2">
-  <div>
+<div id="rightBar1" class="pull-right col-md-3">
+  <div id="event-details">
     <h3> Event Details: </h3>
     <form id="event-form" action="">
       <div>
@@ -35,31 +23,39 @@
         <input type="hidden" name="action_type" id="action_type" value=""/>
         <input type="hidden" name="event_id" id="event_id" value=""/>
       </div>
-      <div>
+      <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="event_name" />
+        <input type="text" id="event_name" class="form-control" />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="description">Description:</label>
-        <input type="text" id="event_description" />
+        <input type="text" id="event_description" class="form-control" />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="start_date">Start Date:</label>
-        <input type="text" id="event_start_date" />
+        <input type="text" id="event_start_date" class="form-control" />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="start_time">Start Time:</label>
-        <input type="text" id="event_start_time" />
+        <input type="text" id="event_start_time" class="form-control" />
       </div>
 
 
-      <button id="event_save_btn" class="btn btn-primary">Save</button>
-      <button id="event_delete_btn" class="btn btn-warning">Delete</button>
+      <span id="event_save_btn" class="btn btn-primary">Save</span>
+      <span id="event_delete_btn" class="btn btn-warning">Delete</span>
+      <span id="event_export_btn" class="btn btn-primary" style="display:none;">Export</span>
     </form>
 
+  </div> <br />
+
+  <div id="other-calendars">
+      <h3> Other Calendars: </h3>
+    <div id="import-gcal" class="checkbox">
+      <label><input type="checkbox" id="import-gcal-checkbox" />aaltoelec@gmail.com</label>
+    </div>
   </div>
 
 </div>

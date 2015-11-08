@@ -13,10 +13,8 @@ var engine = require('ejs-locals');
 var app = express();
 
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
-//app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -29,13 +27,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routing
 var controller_dir = path.resolve("./controllers");
 routing.root(app, controller_dir, "index", "home");
-routing.resources(app, controller_dir, "events", {collection: [
-    ["post", "search", "search"]
+routing.resources(app, controller_dir, "events", {
+  exclude: ["new", "edit", "show"],
+  collection: [
+    ["post", "search", "search"],
+    ["post", "export_event"]
 ]});
+//route for oauth callback (googleapis access token)
+routing.get(app, controller_dir, "/oauth2callback", "events#oauth2callback")
 routing.expose_routing_table(app);
 
-//app.use('/', routes);
-//app.use('/animals', animals);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
