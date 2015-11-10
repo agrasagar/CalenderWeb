@@ -27,7 +27,8 @@ $(document).ready(function() {
             //url for fetching events
             //events: "events",
             eventSources: [ "events" ],
-            timezone: "Europe/Helsinki",
+            //timezone: "Europe/Helsinki",
+            timezone: "UTC",
             allDay: false,
             eventClick: function( event, jsEvent, view ) {
               showEvent(event, jsEvent, view);
@@ -174,7 +175,7 @@ var searchEvents = function(){
       async: false,
       success: function(data){
         console.log(data);
-        var str = "";
+        var str = "<div id='accordion'>";
         if(data.length == 0){
           str = "0 Search results"
             $("#accordion").html(str);
@@ -183,14 +184,15 @@ var searchEvents = function(){
           var start= new Date(event.start_date);
           var end= new Date(event.end_date);
           str += "<h4>"+event.name+"</h4>";
-          str += "<div><p><span>Description: </span><span class='label label-info'>"+event.description+"</span></p>"
-          str += "<p><span>Start: </span><span class='label label-info'>"+start.toDateString()+"</span></p>"
-          str += "<p><span>End: </span><span class='label label-info'>"+end.toDateString()+"</span></p>"
-          str += "<p><span>Recurrence: </span><span class='label label-info'>"+event.repeat+"</span></p></div>"
-          console.log(str);
+          str += "<div><p><span>Description: </span><span class='label label-info'>"+event.description+"</span></p>";
+          str += "<p><span>Start: </span><span class='label label-info'>"+start.toDateString()+"</span></p>";
+          str += "<p><span>End: </span><span class='label label-info'>"+end.toDateString()+"</span></p>";
+          str += "<p><span>Recurrence: </span><span class='label label-info'>"+event.repeat+"</span></p>";
+          str += "</div>";
         });
+        str += "</div>";
         console.log(str);
-        $("#accordion").html(str);
+        $("#search_results").html(str);
         $("#accordion").accordion({
           header: "h4"
         });
